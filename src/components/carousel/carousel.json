@@ -1,0 +1,24 @@
+{
+  "pages": [
+    {
+      "heading": "Page one",
+      "copy": "This is the first carousel page"
+    },
+    {
+      "heading": "Page two",
+      "copy": "This is the second carousel page"
+    },
+    {
+      "heading": "Page three",
+      "copy": "This is the third carousel page"
+    },
+    {
+      "heading": "Page four",
+      "copy": "This is the fourth carousel page"
+    },
+    {
+      "heading": "Page five",
+      "copy": "This is the fifth carousel page"
+    }
+  ]
+}
