@@ -25,65 +25,57 @@ class Carousel {
   }
 
   _state = {
-    prevIndex: 0,
     currIndex: 0
   }
 
   /**
-   * @param {Number} index - Page index to show
+   * @param {Number} index - Index of page to show
    */
   _showPage(index) {
     this._pages[index].removeAttribute(constants.attributes.DATA_HIDDEN)
   }
 
   /**
-   * @param {Number} index - Page index to hide
+   * @param {Number} index - Index of page to hide
    */
   _hidePage(index) {
     this._pages[index].setAttribute(constants.attributes.DATA_HIDDEN, 'true')
   }
 
   /**
-   * @param {Number} action - Amount to navigate
-   * @returns {Number} - Index to navigate to
+   * @param {Number} index - index of page
    */
-  _getNextPage(action) {
-    let nextIndex = this._state.currIndex + action
-
-    // Set nextIndex to last page
-    if (nextIndex < 0) {
-      nextIndex = this._pages.length - 1
-    }
-
-    // Set nextIndex to first page
-    if (nextIndex > this._pages.length - 1) {
-      nextIndex = 0
-    }
-
-    return nextIndex
-  }
-
-  /**
-   * @param {Number} action - Amount to navigate
-   */
-  _navigate(action) {
-    this._state.prevIndex = this._state.currIndex
-    this._state.currIndex = this._getNextPage(action)
-
-    this._hidePage(this._state.prevIndex)
+  _goToPage(index) {
+    this._hidePage(this._state.currIndex)
+    this._state.currIndex = index
     this._showPage(this._state.currIndex)
   }
 
   /**
-   * @param {Event} e - Click event emitted by the button
+   * @param {Event} e - Handle click event emitted by the prev button
    */
-  _handleNavigation(e) {
-    const { target } = e
-    const direction = target.getAttribute(constants.attributes.DATA_DIRECTION)
+  _goToPrevPage(e) {
+    let nextIndex = this._state.currIndex - 1
+    // Set nextIndex to last page if required page is negative
+    if (nextIndex < 0) {
+      nextIndex = this._pages.length - 1
+    }
 
-    const action = direction === 'prev' ? -1 : 1
-    this._navigate(action)
+    this._goToPage(nextIndex)
+    e.preventDefault()
+  }
 
+  /**
+   * @param {Event} e - Handle click event emitted by the next button
+   */
+  _goToNextPage(e) {
+    let nextIndex = this._state.currIndex + 1
+    // Set nextIndex to first page if exceeding amount of pages
+    if (nextIndex > this._pages.length - 1) {
+      nextIndex = 0
+    }
+
+    this._goToPage(nextIndex)
     e.preventDefault()
   }
 
@@ -91,14 +83,8 @@ class Carousel {
    * Add all event listeners that are needed
    */
   _addEventListeners() {
-    this._buttonPrev.addEventListener(
-      'click',
-      this._handleNavigation.bind(this)
-    )
-    this._buttonNext.addEventListener(
-      'click',
-      this._handleNavigation.bind(this)
-    )
+    this._buttonPrev.addEventListener('click', this._goToPrevPage.bind(this))
+    this._buttonNext.addEventListener('click', this._goToNextPage.bind(this))
   }
 
   /**
