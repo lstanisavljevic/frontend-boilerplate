@@ -19,10 +19,15 @@ class Carousel {
    */
   constructor(element, options) {
     this._element = element
-    this._options = options
+    this._options = { ...Carousel._defaultOptions, ...options }
+
+    this._goToPrevPage = this._goToPrevPage.bind(this)
+    this._goToNextPage = this._goToNextPage.bind(this)
 
     this._init()
   }
+
+  _defaultOptions = {}
 
   _state = {
     currIndex: 0
@@ -83,8 +88,8 @@ class Carousel {
    * Add all event listeners that are needed
    */
   _addEventListeners() {
-    this._buttonPrev.addEventListener('click', this._goToPrevPage.bind(this))
-    this._buttonNext.addEventListener('click', this._goToNextPage.bind(this))
+    this._buttonPrev.addEventListener('click', this._goToPrevPage)
+    this._buttonNext.addEventListener('click', this._goToNextPage)
   }
 
   /**
